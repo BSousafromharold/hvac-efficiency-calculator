@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commercial HVAC Energy Efficiency Audit</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    select, input[type=radio] {
+      margin-top: 5px;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    #results {
+      margin-top: 30px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Is Your Commercial HVAC System Wasting Energy?</h1>
+  <form id="auditForm">
+    <div class="section">
+      <label>How old is your HVAC system?</label>
+      <select name="age">
+        <option value="0">Less than 5 years</option>
+        <option value="2">5–10 years</option>
+        <option value="4">10–15 years</option>
+        <option value="6">Over 15 years</option>
+      </select>
+
+      <label>Do you have a preventative maintenance contract?</label>
+      <select name="maintenance">
+        <option value="0">Yes, scheduled service</option>
+        <option value="3">No, only repair calls</option>
+        <option value="2">Not sure</option>
+      </select>
+
+      <label>Do you use automated HVAC controls?</label>
+      <select name="controls">
+        <option value="0">Yes, full BAS</option>
+        <option value="2">Smart thermostats only</option>
+        <option value="4">Manual controls</option>
+      </select>
+
+      <label>How often are filters changed?</label>
+      <select name="filters">
+        <option value="0">Monthly</option>
+        <option value="1">Every 3 months</option>
+        <option value="3">Only when there's an issue</option>
+      </select>
+
+      <label>When was the last time your system had an airflow balance test?</label>
+      <select name="airflow">
+        <option value="0">Within the last year</option>
+        <option value="2">1–3 years ago</option>
+        <option value="4">More than 3 years ago</option>
+        <option value="3">Not sure</option>
+      </select>
+
+      <label>Do you know the SEER or EER rating of your HVAC equipment?</label>
+      <select name="seer">
+        <option value="0">Yes, and it's high-efficiency</option>
+        <option value="2">Yes, but it's below modern standards</option>
+        <option value="3">Not sure</option>
+      </select>
+
+      <label>Are temperature setpoints adjusted during off-hours (nights/weekends)?</label>
+      <select name="setpoints">
+        <option value="0">Yes, automatically</option>
+        <option value="2">Manually</option>
+        <option value="4">No</option>
+        <option value="3">Not sure</option>
+      </select>
+    </div>
+
+    <button type="button" onclick="calculateScore()">Calculate My Efficiency Risk</button>
+  </form>
+
+  <div id="results"></div>
+
+  <script>
+    function calculateScore() {
+      const form = document.forms["auditForm"];
+      let score = 0;
+
+      score += parseInt(form.age.value);
+      score += parseInt(form.maintenance.value);
+      score += parseInt(form.controls.value);
+      score += parseInt(form.filters.value);
+      score += parseInt(form.airflow.value);
+      score += parseInt(form.seer.value);
+      score += parseInt(form.setpoints.value);
+
+      let message = "";
+
+      if (score <= 6) {
+        message = "<strong>Low Efficiency Risk:</strong> Your system seems well-maintained and energy efficient. Keep up the good work!";
+      } else if (score <= 14) {
+        message = "<strong>Moderate Efficiency Risk:</strong> There are signs your system could be improved. Consider scheduling a professional energy audit.";
+      } else {
+        message = "<strong>High Efficiency Risk:</strong> Your system likely has major inefficiencies. Contact us today to schedule a walkthrough and review your options.";
+      }
+
+      document.getElementById("results").innerHTML = message;
+    }
+  </script>
+</body>
+</html>
