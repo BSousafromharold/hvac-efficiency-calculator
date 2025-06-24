@@ -27,12 +27,81 @@
       border: 1px solid #ccc;
       background-color: #f9f9f9;
     }
+    .conditional {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <h1>Is Your Commercial HVAC System Wasting Energy?</h1>
   <form id="auditForm">
     <div class="section">
+      <label>What type of HVAC system do you use?</label>
+      <select name="systemType" id="systemType" onchange="updateSystemTypeQuestions()">
+        <option value="none">Select...</option>
+        <option value="rooftop">Rooftop Units</option>
+        <option value="vrf">VRF Systems</option>
+        <option value="hydronic">Hydronic Heating</option>
+        <option value="unknown">Not Sure</option>
+      </select>
+
+      <div class="conditional" id="rooftopQuestions">
+        <label>Do your rooftop units receive biannual inspections?</label>
+        <select name="rtuInspection">
+          <option value="0">Yes</option>
+          <option value="2">No</option>
+        </select>
+
+        <label>Have your rooftop unit coils been cleaned in the last year?</label>
+        <select name="rtuCoils">
+          <option value="0">Yes</option>
+          <option value="2">No</option>
+        </select>
+      </div>
+
+      <div class="conditional" id="vrfQuestions">
+        <label>Do you regularly inspect refrigerant levels in your VRF system?</label>
+        <select name="vrfRefrigerant">
+          <option value="0">Yes</option>
+          <option value="2">No</option>
+        </select>
+
+        <label>Have you received any error codes on your VRF controller in the past 6 months?</label>
+        <select name="vrfErrors">
+          <option value="0">No</option>
+          <option value="2">Yes</option>
+        </select>
+      </div>
+
+      <div class="conditional" id="hydronicQuestions">
+        <label>Are your hydronic system pipes insulated?</label>
+        <select name="hydronicInsulation">
+          <option value="0">Yes</option>
+          <option value="2">No</option>
+        </select>
+
+        <label>Have you flushed your hydronic system in the last 2 years?</label>
+        <select name="hydronicFlush">
+          <option value="0">Yes</option>
+          <option value="2">No</option>
+        </select>
+      </div>
+
+      <div class="conditional" id="unknownQuestions">
+        <label>Would you like a system assessment to determine your HVAC type?</label>
+        <select name="unknownHelp">
+          <option value="0">Yes</option>
+          <option value="1">Maybe Later</option>
+        </select>
+
+        <label>Do you receive regular HVAC service from a professional contractor?</label>
+        <select name="unknownService">
+          <option value="0">Yes</option>
+          <option value="2">No</option>
+          <option value="1">Not Sure</option>
+        </select>
+      </div>
+
       <label>How old is your HVAC system?</label>
       <select name="age">
         <option value="0">Less than 5 years</option>
@@ -92,23 +161,48 @@
   <div id="results"></div>
 
   <script>
+    function updateSystemTypeQuestions() {
+      const systemType = document.getElementById('systemType').value;
+      document.querySelectorAll('.conditional').forEach(el => el.style.display = 'none');
+
+      if (systemType === 'rooftop') {
+        document.getElementById('rooftopQuestions').style.display = 'block';
+      } else if (systemType === 'vrf') {
+        document.getElementById('vrfQuestions').style.display = 'block';
+      } else if (systemType === 'hydronic') {
+        document.getElementById('hydronicQuestions').style.display = 'block';
+      } else if (systemType === 'unknown') {
+        document.getElementById('unknownQuestions').style.display = 'block';
+      }
+    }
+
     function calculateScore() {
       const form = document.forms["auditForm"];
       let score = 0;
 
-      score += parseInt(form.age.value);
-      score += parseInt(form.maintenance.value);
-      score += parseInt(form.controls.value);
-      score += parseInt(form.filters.value);
-      score += parseInt(form.airflow.value);
-      score += parseInt(form.seer.value);
-      score += parseInt(form.setpoints.value);
+      const fields = ["age", "maintenance", "controls", "filters", "airflow", "seer", "setpoints"];
+      fields.forEach(field => score += parseInt(form[field].value));
+
+      const systemType = form.systemType.value;
+      if (systemType === "rooftop") {
+        score += parseInt(form.rtuInspection.value);
+        score += parseInt(form.rtuCoils.value);
+      } else if (systemType === "vrf") {
+        score += parseInt(form.vrfRefrigerant.value);
+        score += parseInt(form.vrfErrors.value);
+      } else if (systemType === "hydronic") {
+        score += parseInt(form.hydronicInsulation.value);
+        score += parseInt(form.hydronicFlush.value);
+      } else if (systemType === "unknown") {
+        score += parseInt(form.unknownHelp.value);
+        score += parseInt(form.unknownService.value);
+      }
 
       let message = "";
 
-      if (score <= 6) {
+      if (score <= 8) {
         message = "<strong>Low Efficiency Risk:</strong> Your system seems well-maintained and energy efficient. Keep up the good work!";
-      } else if (score <= 14) {
+      } else if (score <= 16) {
         message = "<strong>Moderate Efficiency Risk:</strong> There are signs your system could be improved. Consider scheduling a professional energy audit.";
       } else {
         message = "<strong>High Efficiency Risk:</strong> Your system likely has major inefficiencies. Contact us today to schedule a walkthrough and review your options.";
@@ -116,6 +210,10 @@
 
       document.getElementById("results").innerHTML = message;
     }
+  </script>
+</body>
+</html>
+
   </script>
 </body>
 </html>
