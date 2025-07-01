@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Commercial HVAC Energy Efficiency Audit</title>
   <style>
     body {
@@ -10,19 +10,16 @@
       padding: 20px;
       max-width: 700px;
       margin: auto;
-      background-color: #FFFFFF;
+      background-color: #ffffff;
       color: black;
     }
     label {
       display: block;
       margin-top: 15px;
     }
-    select, input[type=radio] {
-      margin-top: 5px;
-    }
     select {
-      background-color: #001f3f;
-      color: white;
+      background-color: #ffffff;
+      color: black;
       border: 1px solid #ccc;
       border-radius: 5px;
       padding: 5px;
@@ -34,29 +31,11 @@
       margin-top: 30px;
       padding: 15px;
       border: 1px solid #ccc;
-      background-color: #003366;
-      color: white;
+      background-color: #f5f5f5;
+      color: black;
     }
     .conditional {
       display: none;
-    }
-    input[type="radio"] {
-      margin-right: 8px;
-    }
-    .radio-group label {
-      display: inline-block;
-      background-color: #004080;
-      color: white;
-      border-radius: 20px;
-      padding: 8px 15px;
-      margin: 5px;
-      cursor: pointer;
-    }
-    .radio-group input[type="radio"] {
-      display: none;
-    }
-    .radio-group input[type="radio"]:checked + label {
-      background-color: #0074D9;
     }
   </style>
 </head>
@@ -80,7 +59,6 @@
           <option value="0">Yes</option>
           <option value="2">No</option>
         </select>
-
         <label>Have your rooftop unit coils been cleaned in the last year?</label>
         <select name="rtuCoils">
           <option value="none">Select...</option>
@@ -96,7 +74,6 @@
           <option value="0">Yes</option>
           <option value="2">No</option>
         </select>
-
         <label>Have you received any error codes on your VRF controller in the past 6 months?</label>
         <select name="vrfErrors">
           <option value="none">Select...</option>
@@ -112,7 +89,6 @@
           <option value="0">Yes</option>
           <option value="2">No</option>
         </select>
-
         <label>Have you flushed your hydronic system in the last 2 years?</label>
         <select name="hydronicFlush">
           <option value="none">Select...</option>
@@ -128,11 +104,10 @@
           <option value="0">Yes</option>
           <option value="1">Maybe Later</option>
         </select>
-
         <label>Do you receive regular HVAC service from a professional contractor?</label>
         <select name="unknownService">
-          <option value="0">Yes</option>
           <option value="none">Select...</option>
+          <option value="0">Yes</option>
           <option value="2">No</option>
           <option value="1">Not Sure</option>
         </select>
@@ -207,7 +182,6 @@
     function updateSystemTypeQuestions() {
       const systemType = document.getElementById('systemType').value;
       document.querySelectorAll('.conditional').forEach(el => el.style.display = 'none');
-
       if (systemType === 'rooftop') {
         document.getElementById('rooftopQuestions').style.display = 'block';
       } else if (systemType === 'vrf') {
@@ -222,7 +196,6 @@
     function calculateScore() {
       const form = document.forms["auditForm"];
       let score = 0;
-
       const fields = ["age", "maintenance", "controls", "filters", "airflow", "seer", "setpoints"];
       fields.forEach(field => score += parseInt(form[field].value));
 
@@ -241,37 +214,43 @@
         score += parseInt(form.unknownService.value);
       }
 
-      let message = "";
-
+      let message = ``;
       if (score <= 8) {
-        message = "<strong>Low Efficiency Risk:</strong> Your system seems well-maintained and energy efficient. Keep up the good work!
-  <br><br>
-  Here are some tips to stay ahead:
-  <ul>
-    <li>
-      <a href="https://www.haroldbros.com/blog/best-ways-to-prolong-the-life-of-your-commercial-hvac-system" target="_blank" style="color: #00aced;">
-        Best Ways to Prolong the Life of Your Commercial HVAC System
-      </a>
-    </li>
-    <li>
-      <a href="https://www.haroldbros.com/blog/annual-hvac-operating-costs-for-new-england-commercial-buildings" target="_blank" style="color: #00aced;">
-        Annual HVAC Operating Costs for New England Commercial Buildings
-      </a>
-    </li>
-  </ul>
-";
+        message = `
+          <strong>Low Efficiency Risk:</strong> Your system seems well-maintained and energy efficient. Keep up the good work!
+          <br><br>
+          Here are some tips to stay ahead:
+          <ul>
+            <li><a href="https://www.haroldbros.com/blog/best-ways-to-prolong-the-life-of-your-commercial-hvac-system" target="_blank" style="color: #00aced;">Best Ways to Prolong the Life of Your Commercial HVAC System</a></li>
+            <li><a href="https://www.haroldbros.com/blog/annual-hvac-operating-costs-for-new-england-commercial-buildings" target="_blank" style="color: #00aced;">Annual HVAC Operating Costs for New England Commercial Buildings</a></li>
+          </ul>
+        `;
       } else if (score <= 16) {
-        message = "<strong>Moderate Efficiency Risk:</strong> There are signs your system could be improved. Consider having a professional out to review your equipment.";
+        message = `
+          <strong>Moderate Efficiency Risk:</strong> There are signs your system could be improved. Consider scheduling a professional energy audit.
+          <br><br>
+          You might find these articles helpful:
+          <ul>
+            <li><a href="https://www.haroldbros.com/blog/common-commercial-plumbing-repairs" target="_blank" style="color: #ffcc00;">Common Commercial Plumbing Repairs Every Facility Manager Should Know</a></li>
+            <li><a href="https://www.haroldbros.com/blog/5-reasons-why-a-commercial-building-needs-an-hvac-rooftop-unit" target="_blank" style="color: #ffcc00;">5 Reasons Why a Commercial Building Needs an HVAC Rooftop Unit</a></li>
+            <li><a href="https://www.haroldbros.com/blog/best-hvac-practices-for-preparing-a-commercial-building-for-spring" target="_blank" style="color: #ffcc00;">Best HVAC Practices for Preparing a Commercial Building for Spring</a></li>
+          </ul>
+        `;
       } else {
-        message = "<strong>High Efficiency Risk:</strong> Your system likely has major inefficiencies. Contact us today to schedule a walkthrough and review your options.";
+        message = `
+          <strong>High Efficiency Risk:</strong> Your system likely has major inefficiencies. Contact us today to schedule a walkthrough and review your options.
+          <br><br>
+          These articles explain what may be happening:
+          <ul>
+            <li><a href="https://www.haroldbros.com/blog/how-much-do-common-commercial-hvac-repairs-cost" target="_blank" style="color: #ff4136;">How Much Do Common Commercial HVAC Repairs Cost?</a></li>
+            <li><a href="https://www.haroldbros.com/blog/7-problems-with-skipping-preventative-maintenance-on-commercial-plumbing" target="_blank" style="color: #ff4136;">7 Problems with Skipping Preventative Maintenance on Commercial Plumbing</a></li>
+            <li><a href="https://www.haroldbros.com/blog/commercial-plumbing-costs-ma" target="_blank" style="color: #ff4136;">Costs of Commercial Plumbing Repairs in Massachusetts</a></li>
+          </ul>
+        `;
       }
 
       document.getElementById("results").innerHTML = message;
     }
-  </script>
-</body>
-</html>
-
   </script>
 </body>
 </html>
