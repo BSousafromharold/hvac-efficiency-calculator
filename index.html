@@ -169,8 +169,8 @@
 
       <label>Do you know the SEER or EER rating of your HVAC equipment?</label>
       <select name="seer">
-        <option value="0">Yes, and it's high-efficiency</option>
-        <option value="2">Yes, but it's below modern standards</option>
+        <option value="0">Yes, and it's above 14</option>
+        <option value="2">Yes, but it's below 14</option>
         <option value="3">Not sure</option>
       </select>
 
@@ -229,9 +229,9 @@
       let message = "";
 
       if (score <= 8) {
-        message = "<strong>Low Efficiency Risk:</strong> Your system seems well-maintained and energy efficient. Keep up the good work!";
+        message = "<strong>Low Efficiency Risk:</strong> Your system seems well-maintained and energy efficient. Let us know if you need any help with continued Preventative Maintenance";
       } else if (score <= 16) {
-        message = "<strong>Moderate Efficiency Risk:</strong> There are signs your system could be improved. Consider scheduling a professional energy audit.";
+        message = "<strong>Moderate Efficiency Risk:</strong> There are signs your system could be improved. Consider having a professional out to review your equipment.";
       } else {
         message = "<strong>High Efficiency Risk:</strong> Your system likely has major inefficiencies. Contact us today to schedule a walkthrough and review your options.";
       }
