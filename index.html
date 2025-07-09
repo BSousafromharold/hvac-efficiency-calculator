@@ -217,6 +217,23 @@
             calculateScore();
             document.getElementById("results").style.display = "block";
           }
+          function updateSystemTypeQuestions() {
+    const systemType = document.getElementById('systemType').value;
+    const allConditionals = document.querySelectorAll('.conditional');
+
+    allConditionals.forEach(el => el.style.display = 'none');
+
+    if (systemType === 'rooftop') {
+      document.getElementById('rooftopQuestions').style.display = 'block';
+    } else if (systemType === 'vrf') {
+      document.getElementById('vrfQuestions').style.display = 'block';
+    } else if (systemType === 'hydronic') {
+      document.getElementById('hydronicQuestions').style.display = 'block';
+    } else if (systemType === 'unknown') {
+      document.getElementById('unknownQuestions').style.display = 'block';
+    }
+  }
+
         });
       }
     }
