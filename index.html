@@ -203,21 +203,24 @@
   <div id="results"></div>
 
   <!-- HubSpot form loader -->
-  <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
-  <script>
-    function showHubSpotForm() {
-      // Only load the form once
-      if (document.getElementById('hubspot-form-container').innerHTML === '') {
-        hbspt.forms.create({
-          portalId: "47636215",
-          formId: "18a99984-0d90-425b-b2c6-c21bd57ecaba",
-          region: "na1",
-          target: "#hubspot-form-container",
-          onFormSubmit: function () {
-            calculateScore();
-            document.getElementById("results").style.display = "block";
-          }
-          function updateSystemTypeQuestions() {
+ <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+<script>
+  function showHubSpotForm() {
+    if (document.getElementById('hubspot-form-container').innerHTML === '') {
+      hbspt.forms.create({
+        portalId: "47636215",
+        formId: "18a99984-0d90-425b-b2c6-c21bd57ecaba",
+        region: "na1",
+        target: "#hubspot-form-container",
+        onFormSubmit: function () {
+          calculateScore();
+          document.getElementById("results").style.display = "block";
+        }
+      });
+    }
+  }
+
+  function updateSystemTypeQuestions() {
     const systemType = document.getElementById('systemType').value;
     const allConditionals = document.querySelectorAll('.conditional');
 
@@ -234,45 +237,39 @@
     }
   }
 
-        });
-      }
+  function calculateScore() {
+    const form = document.forms["auditForm"];
+    let score = 0;
+    const fields = ["age", "maintenance", "controls", "filters"];
+
+    fields.forEach(field => {
+      const value = form[field]?.value;
+      const num = parseInt(value);
+      if (!isNaN(num)) score += num;
+    });
+
+    let message = "";
+
+    if (score <= 5) {
+      message = `
+        <p><strong>Low Efficiency Risk:</strong> Your system appears to be in great shape!</p>
+        <p>Want to keep it that way? Read our guide on simple steps to extend system life.</p>
+        <a href="https://www.haroldbros.com/blog/extend_life_commercial_hvac" target="_blank" style="color: white; text-decoration: underline;">Read the Guide</a>
+      `;
+    } else if (score <= 10) {
+      message = `
+        <p><strong>Moderate Efficiency Risk:</strong> Your system is showing signs of potential inefficiency.</p>
+        <p>It may be time for a deeper evaluation or preventative improvements.</p>
+        <a href="https://www.haroldbros.com/blog/5-reasons-why-a-commercial-building-needs-an-hvac-rooftop-unit" target="_blank" style="color: white; text-decoration: underline;">See Common Upgrades</a>
+      `;
+    } else {
+      message = `
+        <p><strong>High Efficiency Risk:</strong> Your HVAC system is likely wasting energy and money.</p>
+        <p>A walkthrough or service evaluation can uncover hidden issues and cost-saving opportunities.</p>
+        <a href="https://www.haroldbros.com/blog/how-much-do-common-commercial-hvac-repairs-cost" target="_blank" style="color: white; text-decoration: underline;">See Repair Costs</a>
+      `;
     }
 
-    function calculateScore() {
-      const form = document.forms["auditForm"];
-      let score = 0;
-      const fields = ["age", "maintenance", "controls", "filters"];
-
-      fields.forEach(field => {
-        const value = form[field]?.value;
-        const num = parseInt(value);
-        if (!isNaN(num)) score += num;
-      });
-
-      let message = "";
-
-      if (score <= 5) {
-        message = `
-          <p><strong>Low Efficiency Risk:</strong> Your system appears to be in great shape!</p>
-          <p>Want to keep it that way? Read our guide on simple steps to extend system life.</p>
-          <a href="https://www.haroldbros.com/blog/extend_life_commercial_hvac" target="_blank" style="color: white; text-decoration: underline;">Read the Guide</a>
-        `;
-      } else if (score <= 10) {
-        message = `
-          <p><strong>Moderate Efficiency Risk:</strong> Your system is showing signs of potential inefficiency.</p>
-          <p>It may be time for a deeper evaluation or preventative improvements.</p>
-          <a href="https://www.haroldbros.com/blog/5-reasons-why-a-commercial-building-needs-an-hvac-rooftop-unit" target="_blank" style="color: white; text-decoration: underline;">See Common Upgrades</a>
-        `;
-      } else {
-        message = `
-          <p><strong>High Efficiency Risk:</strong> Your HVAC system is likely wasting energy and money.</p>
-          <p>A walkthrough or service evaluation can uncover hidden issues and cost-saving opportunities.</p>
-          <a href="https://www.haroldbros.com/blog/how-much-do-common-commercial-hvac-repairs-cost" target="_blank" style="color: white; text-decoration: underline;">See Repair Costs</a>
-        `;
-      }
-
-      document.getElementById("results").innerHTML = message;
-    }
-  </script>
-</body>
-</html>
+    document.getElementById("results").innerHTML = message;
+  }
+</script>
